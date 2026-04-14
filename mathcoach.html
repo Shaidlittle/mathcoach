@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shaid Math Coach — Pass Maths. No Excuses.</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --black: #080c14;
+    --white: #eef2ff;
+    --blue: #3b6bff;
+    --blue-light: #6b91ff;
+    --yellow: #f5e642;
+    --muted: #5a6480;
+    --card-bg: #0f1520;
+    --border: #1e2740;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--black); color: var(--white); overflow-x: hidden; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.25rem 2.5rem;
+    background: rgba(8,12,20,0.88); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.2rem; color: var(--white); text-decoration: none; }
+  .logo span { color: var(--yellow); }
+  .nav-cta {
+    background: var(--yellow); color: var(--black);
+    font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 0.875rem;
+    padding: 0.6rem 1.4rem; border-radius: 100px; text-decoration: none;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .nav-cta:hover { opacity: 0.88; transform: scale(1.03); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column; justify-content: center;
+    padding: 9rem 2.5rem 5rem; position: relative; overflow: hidden;
+  }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(59,107,255,0.12); border: 1px solid rgba(59,107,255,0.35);
+    color: var(--blue-light); font-size: 0.8rem; font-weight: 500;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 0.4rem 1rem; border-radius: 100px;
+    margin-bottom: 2rem; width: fit-content;
+  }
+  .hero-eyebrow::before {
+    content: ''; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--blue-light); animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.3} }
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(3rem, 8vw, 6.5rem);
+    font-weight: 800; line-height: 1.0; letter-spacing: -0.02em;
+    margin-bottom: 1.5rem; max-width: 900px;
+  }
+  h1 em { font-style: normal; color: var(--yellow); }
+  .hero-sub {
+    font-size: clamp(1rem, 2vw, 1.2rem); color: var(--muted);
+    font-weight: 300; max-width: 520px; line-height: 1.7; margin-bottom: 2.5rem;
+  }
+  .hero-sub strong { color: var(--white); font-weight: 500; }
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    background: var(--yellow); color: var(--black);
+    font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 1rem;
+    padding: 0.9rem 2rem; border-radius: 100px; text-decoration: none;
+    transition: transform 0.2s, opacity 0.2s;
+  }
+  .btn-primary:hover { transform: translateY(-2px); opacity: 0.88; }
+  .btn-ghost { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--muted); font-size: 0.95rem; text-decoration: none; transition: color 0.2s; }
+  .btn-ghost:hover { color: var(--white); }
+  .wa-icon { width: 20px; height: 20px; fill: currentColor; }
+  .hero-bg-text {
+    position: absolute; bottom: -2rem; right: -1rem;
+    font-family: 'Syne', sans-serif; font-size: clamp(8rem, 20vw, 18rem);
+    font-weight: 800; color: rgba(255,255,255,0.02);
+    user-select: none; pointer-events: none; white-space: nowrap; line-height: 1;
+  }
+  .hero-stats {
+    display: flex; gap: 3rem; margin-top: 4rem;
+    padding-top: 2rem; border-top: 1px solid var(--border); flex-wrap: wrap;
+  }
+  .stat-num { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; color: var(--yellow); }
+  .stat-label { font-size: 0.85rem; color: var(--muted); margin-top: 0.25rem; }
+
+  /* SECTIONS */
+  section { padding: 6rem 2.5rem; }
+  .section-tag { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue-light); margin-bottom: 1rem; }
+  h2 { font-family: 'Syne', sans-serif; font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 1rem; }
+  .section-sub { font-size: 1.05rem; color: var(--muted); font-weight: 300; max-width: 540px; line-height: 1.7; margin-bottom: 3rem; }
+
+  /* WHO I HELP */
+  .who { background: var(--black); }
+  .who-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; }
+  .who-card {
+    background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 16px; padding: 2rem; transition: border-color 0.3s, transform 0.3s;
+  }
+  .who-card:hover { border-color: var(--blue); transform: translateY(-4px); }
+  .who-icon { font-size: 2rem; margin-bottom: 1rem; }
+  .who-card h3 { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .who-card p { font-size: 0.875rem; color: var(--muted); line-height: 1.6; }
+
+  /* RESULTS */
+  .results { background: #0a0f1c; }
+  .results-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
+  .result-card {
+    background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 16px; padding: 2rem; position: relative;
+    transition: border-color 0.3s;
+  }
+  .result-card:hover { border-color: var(--yellow); }
+  .grade-before {
+    font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700;
+    color: #e24b4a; margin-bottom: 0.5rem;
+  }
+  .grade-arrow { color: var(--muted); font-size: 1.5rem; margin-bottom: 0.5rem; }
+  .grade-after {
+    font-family: 'Syne', sans-serif; font-size: 2.5rem; font-weight: 800;
+    color: var(--yellow); margin-bottom: 0.75rem; line-height: 1;
+  }
+  .result-card h3 { font-size: 0.95rem; font-weight: 500; margin-bottom: 0.25rem; }
+  .result-card p { font-size: 0.8rem; color: var(--muted); }
+  .quote-mark { position: absolute; top: 1.5rem; right: 1.5rem; font-size: 3rem; color: rgba(255,255,255,0.04); font-family: 'Syne', sans-serif; line-height: 1; }
+
+  /* WHAT I COVER */
+  .subjects { background: var(--black); }
+  .subject-tags { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1rem; }
+  .tag {
+    background: var(--card-bg); border: 1px solid var(--border);
+    color: var(--white); font-size: 0.9rem; font-weight: 400;
+    padding: 0.6rem 1.25rem; border-radius: 100px;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .tag:hover { border-color: var(--blue-light); color: var(--blue-light); }
+  .tag.hot { border-color: rgba(245,230,66,0.4); color: var(--yellow); background: rgba(245,230,66,0.06); }
+
+  /* PRICING */
+  .pricing { background: #0a0f1c; }
+  .pricing-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; max-width: 860px; }
+  .pricing-card {
+    background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 20px; padding: 2.5rem; transition: transform 0.3s;
+  }
+  .pricing-card:hover { transform: translateY(-4px); }
+  .pricing-card.featured { border-color: var(--yellow); background: rgba(245,230,66,0.04); }
+  .featured-badge {
+    display: inline-block; background: var(--yellow); color: var(--black);
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 0.3rem 0.8rem; border-radius: 100px; margin-bottom: 1.5rem;
+  }
+  .price { font-family: 'Syne', sans-serif; font-size: 2.8rem; font-weight: 800; line-height: 1; margin-bottom: 0.25rem; }
+  .price-note { font-size: 0.85rem; color: var(--muted); margin-bottom: 1.5rem; }
+  .pricing-card h3 { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.4rem; }
+  .pricing-card .desc { font-size: 0.875rem; color: var(--muted); margin-bottom: 1.75rem; line-height: 1.6; }
+  .feature-list { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
+  .feature-list li { display: flex; align-items: flex-start; gap: 0.75rem; font-size: 0.9rem; }
+  .feature-list li::before {
+    content: ''; width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0; margin-top: 2px;
+    background: rgba(245,230,66,0.1) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none'%3E%3Cpath d='M2 6l3 3 5-5' stroke='%23f5e642' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center / 10px;
+    border: 1px solid rgba(245,230,66,0.3);
+  }
+
+  /* PROCESS */
+  .process { background: var(--black); }
+  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; }
+  .step-num { font-family: 'Syne', sans-serif; font-size: 3rem; font-weight: 800; color: rgba(255,255,255,0.05); line-height: 1; margin-bottom: 0.75rem; }
+  .step h3 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; margin-bottom: 0.5rem; }
+  .step p { font-size: 0.875rem; color: var(--muted); line-height: 1.6; }
+
+  /* CTA */
+  .cta-section { background: var(--yellow); padding: 5rem 2.5rem; text-align: center; }
+  .cta-section h2 { color: var(--black); font-size: clamp(2rem, 5vw, 3.5rem); margin-bottom: 1rem; }
+  .cta-section p { color: rgba(0,0,0,0.6); font-size: 1.1rem; margin-bottom: 2rem; }
+  .btn-dark {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    background: var(--black); color: var(--white);
+    font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 1.05rem;
+    padding: 1rem 2.25rem; border-radius: 100px; text-decoration: none;
+    transition: transform 0.2s, opacity 0.2s;
+  }
+  .btn-dark:hover { transform: translateY(-2px); opacity: 0.85; }
+
+  /* FOOTER */
+  footer {
+    background: var(--black); border-top: 1px solid var(--border);
+    padding: 2rem 2.5rem; display: flex; justify-content: space-between;
+    align-items: center; flex-wrap: wrap; gap: 1rem;
+  }
+  .footer-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1rem; }
+  .footer-logo span { color: var(--yellow); }
+  footer p { font-size: 0.8rem; color: var(--muted); }
+
+  /* MOBILE */
+  @media (max-width: 640px) {
+    nav { padding: 1rem 1.25rem; }
+    section { padding: 4rem 1.25rem; }
+    .hero { padding: 7rem 1.25rem 4rem; }
+    .hero-stats { gap: 2rem; }
+    footer { flex-direction: column; text-align: center; padding: 1.5rem 1.25rem; }
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp { from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)} }
+  .hero-eyebrow { animation: fadeUp 0.6s ease both; }
+  h1 { animation: fadeUp 0.6s 0.1s ease both; }
+  .hero-sub { animation: fadeUp 0.6s 0.2s ease both; }
+  .hero-actions { animation: fadeUp 0.6s 0.3s ease both; }
+  .hero-stats { animation: fadeUp 0.6s 0.4s ease both; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="logo">Shaid<span>Maths</span></a>
+  <a href="https://wa.me/27733331468?text=Hi%20Shaid%2C%20I%20need%20help%20with%20maths" class="nav-cta" target="_blank">Book a Session</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-eyebrow">Online &amp; In-person · Benoni, Gauteng</div>
+  <h1>Stop failing<br>maths. Start<br><em>owning it.</em></h1>
+  <p class="hero-sub">
+    Private maths coaching for <strong>Grades 8–12</strong> and university students.
+    Real explanations, real results — not just memorising formulas.
+  </p>
+  <div class="hero-actions">
+    <a href="https://wa.me/27733331468?text=Hi%20Shaid%2C%20I%20need%20help%20with%20maths" class="btn-primary" target="_blank">
+      <svg class="wa-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+      </svg>
+      Book a Session
+    </a>
+    <a href="#pricing" class="btn-ghost">See pricing ↓</a>
+  </div>
+  <div class="hero-stats">
+    <div><div class="stat-num">50+</div><div class="stat-label">Students helped</div></div>
+    <div><div class="stat-num">90%</div><div class="stat-label">Pass rate improvement</div></div>
+    <div><div class="stat-num">Gr 8–12</div><div class="stat-label">+ University level</div></div>
+  </div>
+  <div class="hero-bg-text" aria-hidden="true">MATHS</div>
+</section>
+
+<!-- WHO I HELP -->
+<section class="who">
+  <div class="section-tag">Who this is for</div>
+  <h2>Struggling students.<br>Worried parents.<br>Both welcome.</h2>
+  <p class="section-sub">Whether you're failing or just want to go from a 60% to an 80% — I can help.</p>
+  <div class="who-grid">
+    <div class="who-card">
+      <div class="who-icon">📚</div>
+      <h3>High School Students</h3>
+      <p>Grades 8 to 12. From basic algebra to calculus and statistics. NSC exam prep included.</p>
+    </div>
+    <div class="who-card">
+      <div class="who-icon">🎓</div>
+      <h3>Matric Final Year</h3>
+      <p>Matric maths is make or break. I help students pass — and pass well — when it matters most.</p>
+    </div>
+    <div class="who-card">
+      <div class="who-icon">🏛️</div>
+      <h3>University Students</h3>
+      <p>Engineering maths, calculus, linear algebra. I break it down so it actually makes sense.</p>
+    </div>
+    <div class="who-card">
+      <div class="who-icon">👨‍👩‍👧</div>
+      <h3>Parents of Struggling Kids</h3>
+      <p>If your child is failing and you don't know what to do — one session can change everything.</p>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section class="results">
+  <div class="section-tag">Real results</div>
+  <h2>Students who went<br>from failing to flying.</h2>
+  <p class="section-sub">These are real turnarounds. Consistent effort plus the right coaching works every time.</p>
+  <div class="results-grid">
+    <div class="result-card">
+      <div class="quote-mark">"</div>
+      <div class="grade-before">Was getting: 28%</div>
+      <div class="grade-arrow">↓</div>
+      <div class="grade-after">67%</div>
+      <h3>Thabo M. — Grade 11</h3>
+      <p class="result-card p">Passed his November exam after 6 weeks of sessions. First time passing maths in 2 years.</p>
+    </div>
+    <div class="result-card">
+      <div class="quote-mark">"</div>
+      <div class="grade-before">Was getting: 41%</div>
+      <div class="grade-arrow">↓</div>
+      <div class="grade-after">78%</div>
+      <h3>Lerato K. — Matric</h3>
+      <p>Got into her first-choice university after matric. Trigonometry went from impossible to easy.</p>
+    </div>
+    <div class="result-card">
+      <div class="quote-mark">"</div>
+      <div class="grade-before">Was getting: 35%</div>
+      <div class="grade-arrow">↓</div>
+      <div class="grade-after">71%</div>
+      <h3>Sipho D. — Grade 9</h3>
+      <p>Parents called after one term. Said it was the first time their son actually enjoyed maths.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT I COVER -->
+<section class="subjects">
+  <div class="section-tag">Topics covered</div>
+  <h2>Whatever is on<br>your paper — I cover it.</h2>
+  <p class="section-sub">From the basics you missed in Grade 8 to advanced calculus. We start where you are.</p>
+  <div class="subject-tags">
+    <span class="tag hot">Algebra</span>
+    <span class="tag hot">Calculus</span>
+    <span class="tag hot">Trigonometry</span>
+    <span class="tag">Functions &amp; Graphs</span>
+    <span class="tag">Euclidean Geometry</span>
+    <span class="tag">Statistics &amp; Probability</span>
+    <span class="tag">Analytical Geometry</span>
+    <span class="tag">Number Patterns &amp; Sequences</span>
+    <span class="tag">Financial Maths</span>
+    <span class="tag">Linear Algebra</span>
+    <span class="tag">Differential Equations</span>
+    <span class="tag hot">NSC Exam Prep</span>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <div class="section-tag">Pricing</div>
+  <h2>Invest in your<br>child's future.</h2>
+  <p class="section-sub">All sessions are 1-hour. Online via Google Meet or in-person in Benoni. No hidden fees.</p>
+  <div class="pricing-cards">
+    <div class="pricing-card">
+      <div class="price">R250<span style="font-size:1rem;font-weight:400;color:var(--muted)">/session</span></div>
+      <div class="price-note">Pay per session · No commitment</div>
+      <h3>Single Session</h3>
+      <p class="desc">Try it once. One focused hour on exactly what you're struggling with.</p>
+      <ul class="feature-list">
+        <li>1-hour focused session</li>
+        <li>Online or in-person</li>
+        <li>Worksheet provided after</li>
+        <li>WhatsApp follow-up support</li>
+      </ul>
+    </div>
+    <div class="pricing-card featured">
+      <div class="featured-badge">Best value</div>
+      <div class="price">R800<span style="font-size:1rem;font-weight:400;color:var(--muted)">/month</span></div>
+      <div class="price-note">4 sessions · R200/session</div>
+      <h3>Monthly Package</h3>
+      <p class="desc">One session per week. This is where real improvement happens consistently.</p>
+      <ul class="feature-list">
+        <li>4 sessions per month</li>
+        <li>Online or in-person</li>
+        <li>Custom study plan</li>
+        <li>Past paper practice</li>
+        <li>Unlimited WhatsApp questions</li>
+        <li>Progress report to parents</li>
+      </ul>
+    </div>
+    <div class="pricing-card">
+      <div class="price">R1,400<span style="font-size:1rem;font-weight:400;color:var(--muted)">/month</span></div>
+      <div class="price-note">8 sessions · R175/session</div>
+      <h3>Intensive Package</h3>
+      <p class="desc">2 sessions per week. For students who need to catch up fast or prep for exams.</p>
+      <ul class="feature-list">
+        <li>8 sessions per month</li>
+        <li>Full topic catch-up plan</li>
+        <li>Exam strategy coaching</li>
+        <li>Unlimited WhatsApp support</li>
+        <li>Weekly progress reports</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="process">
+  <div class="section-tag">How it works</div>
+  <h2>Simple to start.</h2>
+  <p class="section-sub">No complicated sign-ups. Just a WhatsApp and we sort it out.</p>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <h3>WhatsApp me</h3>
+      <p>Tell me what grade you're in and what topics you're struggling with.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <h3>Quick assessment</h3>
+      <p>I'll ask a few questions to understand exactly where you are and build a plan.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <h3>Book your first session</h3>
+      <p>Pick a time that works. Online or in Benoni. Pay upfront or via EFT.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <h3>Watch the marks improve</h3>
+      <p>Most students see a difference within the first 3 sessions. Stick with it and you'll pass.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2>Your child can pass maths.<br>Let's make it happen.</h2>
+  <p>One WhatsApp. That's all it takes to get started today.</p>
+  <a href="https://wa.me/27733331468?text=Hi%20Shaid%2C%20I%20need%20help%20with%20maths" class="btn-dark" target="_blank">
+    <svg style="width:20px;height:20px;fill:white;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+    </svg>
+    073 333 1468 — Book Now
+  </a>
+</section>
+
+<footer>
+  <div class="footer-logo">Shaid<span>Maths</span></div>
+  <p>Private maths coaching · Benoni, Gauteng · Online &amp; In-person</p>
+  <p>© 2026 ShaidMaths</p>
+</footer>
+
+</body>
+</html>
